@@ -1,0 +1,3 @@
+3.B: Stage Technician is Samuel
+3.C: Stage Technician: use foundation, powerder, eye and lip pencils, lipstick
+3.D: Person is Coco
