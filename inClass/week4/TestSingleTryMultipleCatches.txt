@@ -1,0 +1,6 @@
+public class TestSingleTryMultipleCatches{
+public static void main(String[] args) {
+        SingleTryMultipleCatches obj = new SingleTryMultipleCatches();
+        obj.multipleCatch();
+        }
+}
