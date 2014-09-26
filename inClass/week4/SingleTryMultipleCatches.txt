@@ -1,0 +1,19 @@
+class SingleTryMultipleCatches {
+        public void multipleCatch() {
+        int list[] = { 10, 20, 30, 40 };
+        int number1 = 50, number2 = 0, result;
+        try {
+                result = number1 / number2;
+                System.out.println("number1 / number2 = " + result);
+                for (int i = 0; i <= 4; i++) {
+                        list[i] = i;
+                }
+        } 
+        catch (ArrayIndexOutOfBoundsException ex1) {
+                System.out.println(ex1);
+        }
+        catch (ArithmeticException ex2) {
+                System.out.println(ex2);
+        }
+    }
+ }
