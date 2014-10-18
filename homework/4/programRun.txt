@@ -1,0 +1,6 @@
+List contents: [22, 7, 4, 12, 8, 11, 12, 9, 1, 3]
+List contents: [7, 4, 12, 8, 11, 12, 9, 1, 3]
+List contents: [7, 4, 12, 8, 11, 12, 9, 1, 3]
+12 was found at index 2
+12 was found at index 6
+Contents of item 3: 12
