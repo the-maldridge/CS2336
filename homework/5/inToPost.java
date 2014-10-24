@@ -13,16 +13,16 @@ public class inToPost {
 class eqMan {
     public int getOpPriority(QType.OP op) {
 	switch(op) {
-	case QType.OP.ADD:
-	case QType.OP.SUB:
+	case ADD:
+	case SUB:
 	    return 1;
-	case QType.OP.MUL:
-	case QType.OP.DIV:
+	case MUL:
+	case DIV:
 	    return 2;
-	case QType.OP.EXP:
+	case EXP:
 	    return 3;
-	case QType.OP.LPR:
-	case QType.OP.RPR:
+	case LPR:
+	case RPR:
 	    return 0;
 	}
 	return -1; //never should make it to here
@@ -32,6 +32,9 @@ class eqMan {
 	Queue rpnExpression = new LinkedList<QType>();
 	Stack opStack = new Stack<QType.OP>();
 
+	while(expression.) {
+	    
+	}
 	return rpnExpression;
     }
 
