@@ -5,15 +5,120 @@ import java.util.Stack;
 
 public class inToPost {
     public static void main(String[] args) {
-	eqMan foo = new eqMan();
-	Queue<QType> infix = foo.tokenize("  23/4 +(7 ^7)*B+1");
-	System.out.println(infix);
-	System.out.println(foo.shunt(infix));
-	
+	Scanner kbd = new Scanner(System.in);
+	String infixInput = "";
+
+	System.out.print("Please input a valid infix expression: ");
+	infixInput = kbd.next();
+
+	eqMan expressionManager = new eqMan();
+	//tokenize the input
+	Queue<QType> infix = expressionManager.tokenize(infixInput);
+	//shunt through the yard to create postfix
+	Queue<QType> postfix = expressionManager.shunt(infix);
+
+	System.out.println("Infix expression: " + infixInput);
+	System.out.println("Postfix expression: " + expressionManager.getPostFix(postfix));
+
+	if(expressionManager.hasVar(postfix)) {
+	    System.out.println("This expression has variable terms, evaluation not possible.");
+	} else {
+	    System.out.println("This expression is solvable, answer is: " + expressionManager.calculate(postfix));
+	}
     }
 }
 
 class eqMan {
+    public boolean hasVar(Queue<QType> exp) {
+	Queue<QType> temp = new LinkedList<QType>(exp);
+	QType current;
+
+	while(!temp.isEmpty()) {
+	    current = temp.poll();
+	    if(current.type == QType.Type.VARIABLE) {
+		return true;
+	    }
+	}
+	return false; //no variables, safe to evaluate
+    }
+
+    public String getPostFix(Queue<QType> exp) {
+	Queue<QType> rpn = new LinkedList<QType>(exp);
+	StringBuilder out = new StringBuilder();
+
+	while(!rpn.isEmpty()) {
+	    QType token = rpn.poll();
+	    switch(token.type) {
+	    case OPERAND:
+		out.append(token.value);
+		break;
+	    case VARIABLE:
+		out.append(token.var);
+		break;
+	    case OPERATOR:
+		char c = '|';
+		switch(token.op) {
+		case ADD:
+		    c='+';
+		    break;
+		case SUB:
+		    c='-';
+		    break;
+		case MUL:
+		    c='*';
+		    break;
+		case DIV:
+		    c='/';
+		    break;
+		case EXP:
+		    c='^';
+		    break;
+		}
+		out.append(c);
+	    }
+	    out.append(" ");
+	}
+	return out.toString();
+    }
+
+    public double calculate(Queue<QType> postfix) {
+	Stack<Double> evalStack = new Stack<Double>();
+	QType token;
+	
+	while(!postfix.isEmpty()) {
+	    token = postfix.poll();
+	    switch(token.type) {
+	    case OPERAND:
+		evalStack.push((double)(token.value));
+		break;
+	    case OPERATOR:
+		double a,b;
+		a = evalStack.pop();
+		b = evalStack.pop();
+		switch(token.op) {
+		case ADD:
+		    evalStack.push(a+b);
+		    break;
+		case SUB:
+		    evalStack.push(b-a);
+		    break;
+		case MUL:
+		    evalStack.push(a*b);
+		    break;
+		case DIV:
+		    evalStack.push(b/a);
+		    break;
+		case EXP:
+		    evalStack.push(Math.pow(b,a));
+		    break;
+		}
+	    }
+	}
+
+	//if everything has gone right, the answer is on evalStack
+	return evalStack.pop();
+    }
+
     public int getOpPriority(QType.OP op) {
 	switch(op) {
 	case ADD:
@@ -48,7 +153,6 @@ class eqMan {
 		rpnExpression.add(currentToken);
 		break;
 	    case OPERATOR:
-		System.out.println("got op");
 		//if it is an operator, we need to know if it is an lparen
 		if(currentToken.op == QType.OP.LPR) {
 		    //push the paren on to the opstack and descend
@@ -86,8 +190,6 @@ class eqMan {
 	
 	//remove all whitespace
 	eq = eq.replaceAll("\\s","");
-	
-	System.out.println(eq);
 	
 	for(int i=0; i<eq.length(); i++) {
 	    if(operators.contains(Character.toString(eq.charAt(i)))) {
@@ -129,7 +231,7 @@ class eqMan {
 			}
 		    } else {
 			break;
-		    }
+		    } 
 		}
 		tokens.add(toQ(num));
 	    } else {
