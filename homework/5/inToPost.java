@@ -6,7 +6,10 @@ import java.util.Stack;
 public class inToPost {
     public static void main(String[] args) {
 	eqMan foo = new eqMan();
-	System.out.println(foo.tokenize("  23/4 +(7 ^7)*B+1"));
+	Queue<QType> infix = foo.tokenize("  23/4 +(7 ^7)*B+1");
+	System.out.println(infix);
+	System.out.println(foo.shunt(infix));
+	
     }
 }
 
@@ -28,18 +31,57 @@ class eqMan {
 	return -1; //never should make it to here
     }
 
-    public Queue shunt(Queue expression) {
-	Queue rpnExpression = new LinkedList<QType>();
-	Stack opStack = new Stack<QType.OP>();
+    public Queue<QType> shunt(Queue<QType> expression) {
+	Queue<QType> rpnExpression = new LinkedList<QType>();
+	Stack<QType> opStack = new Stack<QType>();
 
-	while(expression.) {
-	    
+	while(!expression.isEmpty()) {
+	    QType currentToken = expression.poll();
+
+	    switch(currentToken.type) {
+	    case OPERAND:
+		//if it is an operand, add it to the stack
+		rpnExpression.add(currentToken);
+		break;
+	    case VARIABLE:
+		//if it is a variable, it is just an operand
+		rpnExpression.add(currentToken);
+		break;
+	    case OPERATOR:
+		System.out.println("got op");
+		//if it is an operator, we need to know if it is an lparen
+		if(currentToken.op == QType.OP.LPR) {
+		    //push the paren on to the opstack and descend
+		    opStack.push(currentToken);
+		} else if(currentToken.op == QType.OP.RPR) {
+		    //if right paren, pop all ops from the stack
+		    while(opStack.peek().op != QType.OP.LPR) {
+			rpnExpression.add(opStack.pop());
+		    }
+		    opStack.pop(); //get rid of the lparen sitting on the stack
+		} else {
+		    while(!opStack.empty() && getOpPriority(currentToken.op) <= getOpPriority(opStack.peek().op)) {
+			//if precidence is correct, pop to stack
+			rpnExpression.add(opStack.pop());
+		    }
+		    opStack.push(currentToken);
+		}
+		break;
+	    default:
+		System.out.println("EXPRESSION NOT MATHEMATICALLY VALID");
+		break;
+	    }
 	}
+	//return any remaining operators
+	while(!opStack.isEmpty()) {
+	    rpnExpression.add(opStack.pop());
+	}
+
 	return rpnExpression;
     }
 
-    public Queue tokenize(String eq) {
-	Queue tokens = new LinkedList<QType>();
+    public Queue<QType> tokenize(String eq) {
+	Queue<QType> tokens = new LinkedList<QType>();
 	String operators = "+-*/^()";
 	
 	//remove all whitespace
