@@ -1,3 +1,13 @@
+/*
+Author : Michael Aldridge
+Class  : CS2336
+Section: 001
+Assignment: 5
+
+Instructions: Compile with javac inToPost.java; run as java inToPost; This implementation will make an attempt to calculate all expressions that are calculable.
+              Expressions containing variable components will not be calculated.  
+	      Multi-digit integer input is accepted.
+*/
 import java.util.Scanner;
 import java.util.LinkedList;
 import java.util.Queue;
