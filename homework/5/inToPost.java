@@ -19,7 +19,7 @@ public class inToPost {
 	String infixInput = "";
 
 	System.out.print("Please input a valid infix expression: ");
-	infixInput = kbd.next();
+	infixInput = kbd.nextLine();
 
 	eqMan expressionManager = new eqMan();
 	//tokenize the input
