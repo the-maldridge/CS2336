@@ -1,0 +1,11 @@
+maldridge@theGibson:~/Documents/CS2336/homework/5 (master)$ javac inToPost.java 
+maldridge@theGibson:~/Documents/CS2336/homework/5 (master)$ java inToPost 
+Please input a valid infix expression: x / y ^ z + p * q – x * z
+Infix expression: x / y ^ z + p * q – x * z
+Postfix expression: x y z ^ / p q – x * z * + 
+This expression has variable terms, evaluation not possible.
+maldridge@theGibson:~/Documents/CS2336/homework/5 (master)$ java inToPost 
+Please input a valid infix expression: ((((a^b)*c)-d)+((e/f)/(g+h)))
+Infix expression: ((((a^b)*c)-d)+((e/f)/(g+h)))
+Postfix expression: a b ^ c * d - e f / g h + / + 
+This expression has variable terms, evaluation not possible.
